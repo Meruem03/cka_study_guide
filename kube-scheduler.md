@@ -40,3 +40,4 @@ spec:
   tolerations: # Allows pod to be scheduled on nodes with specific taints
   - key: "special-node"
     operator: "Exists"
+    effect: "NoSchedule"
