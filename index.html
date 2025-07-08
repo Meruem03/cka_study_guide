@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKA Study Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/zero-md@3"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>CKA Study Guide</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="loadContent('etcd.md')">etcd</a></li>
+                    <li><a href="#" onclick="loadContent('kube-apiserver.md')">kube-apiserver</a></li>
+                    <li><a href="#" onclick="loadContent('kube-scheduler.md')">kube-scheduler</a></li>
+                    <li><a href="#" onclick="loadContent('kube-controller-manager.md')">kube-controller-manager</a></li>
+                    <li><a href="#" onclick="loadContent('kubelet.md')">kubelet</a></li>
+                    <li><a href="#" onclick="loadContent('kube-proxy.md')">kube-proxy</a></li>
+                    <li><a href="#" onclick="loadContent('cheat-sheet.md')">CKA Cheat Sheet</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="content">
+            <zero-md id="markdown-display" src="cheat-sheet.md">
+                <template>
+                    <style>
+                        /* Optional: Customize markdown display within zero-md */
+                        h1 { color: #2c3e50; }
+                        h2 { border-bottom: 2px solid #eee; padding-bottom: 5px; }
+                        pre { background-color: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+                        code { font-family: monospace; background-color: #e0e0e0; padding: 2px 4px; border-radius: 3px; }
+                        a { color: #3498db; text-decoration: none; }
+                        a:hover { text-decoration: underline; }
+                        ul, ol { margin-left: 20px; }
+                    </style>
+                </template>
+            </zero-md>
+        </main>
+    </div>
+
+    <script>
+        function loadContent(filename) {
+            const markdownDisplay = document.getElementById('markdown-display');
+            markdownDisplay.setAttribute('src', filename);
+        }
+
+        // Load the cheat sheet by default when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent('cheat-sheet.md');
+        });
+    </script>
+</body>
+</html>
