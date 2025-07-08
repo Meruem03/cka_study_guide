@@ -1,0 +1,13 @@
+# CKA Study Guide
+
+This repository contains a basic, interactive study guide for the Certified Kubernetes Administrator (CKA) exam. It covers core Kubernetes components like etcd, kube-apiserver, kubelet, and more, along with a handy cheat sheet.
+
+## Access the Guide Online
+
+You can browse the study guide directly via GitHub Pages:
+[https://meruem03.github.io/cka_study_guide/](https://meruem03.github.io/cka_study_guide/)
+
+## License
+
+This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/).
+You are free to share and adapt this material for non-commercial purposes, with attribution.
