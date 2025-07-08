@@ -1,0 +1,22 @@
+# Operating System files
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# IDE/Editor specific files
+.vscode/ # VS Code settings (if you don't want to share them)
+*.swp    # Vim swap files
+*~       # Emacs backup files
+
+# node_modules (if you were to install zero-md locally via npm)
+# If you decide to manage front-end dependencies with npm, you'd add this:
+# node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.env # Environment variables (not used here, but good practice)
+.tmp/
