@@ -177,14 +177,14 @@ This is a concise guide to common \`kubectl\` commands and essential Kubernetes 
     summarizeBtn.addEventListener('click', () => {
         showModal('✨ AI Summary');
         const content = markdownContent[currentTopic];
-        const prompt = \`Please summarize the following CKA study guide topic in a few key bullet points. Focus on the most critical information for someone preparing for the exam. The topic is "${currentTopic}". Here is the content:\n\n---\n\n${content}\`;
+        const prompt = `Please summarize the following CKA study guide topic in a few key bullet points. Focus on the most critical information for someone preparing for the exam. The topic is "${currentTopic}". Here is the content:\n\n---\n\n${content}`;
         callGemini(prompt);
     });
 
     quizBtn.addEventListener('click', () => {
         showModal('✨ AI Quiz');
         const content = markdownContent[currentTopic];
-        const prompt = \`Based on the following CKA study material about "${currentTopic}", generate 3 multiple-choice quiz questions with 4 options each (A, B, C, D). The questions should be in a markdown format. Bold the correct answer for each question. Here is the content:\n\n---\n\n${content}\`;
+        const prompt = `Based on the following CKA study material about "${currentTopic}", generate 3 multiple-choice quiz questions with 4 options each (A, B, C, D). The questions should be in a markdown format. Bold the correct answer for each question. Here is the content:\n\n---\n\n${content}`;
         callGemini(prompt);
     });
 
