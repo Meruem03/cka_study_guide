@@ -1,56 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CKA Study Guide</title>
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f7f6;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        width: 100%;
+      }
+
+      .sidebar {
+        width: 250px;
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        flex-shrink: 0;
+      }
+
+      .sidebar h1 {
+        font-size: 1.5em;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar nav ul li {
+        margin-bottom: 10px;
+      }
+
+      .sidebar nav ul li a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .sidebar nav ul li a:hover {
+        background-color: #34495e;
+      }
+
+      .content {
+        flex-grow: 1;
+        padding: 20px 40px;
+        max-width: 900px; /* Limit content width for better readability */
+        margin: 0 auto; /* Center the content */
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        overflow-y: auto; /* Enable scrolling for long content */
+      }
+
+      /* Basic styling for markdown content inside zero-md */
+      .content h1 {
+        color: #2c3e50;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+        margin-top: 0;
+      }
+
+      .content h2 {
+        color: #34495e;
+        margin-top: 30px;
+      }
+
+      .content p {
+        line-height: 1.6;
+        margin-bottom: 1em;
+      }
+
+      .content ul,
+      .content ol {
+        margin-left: 25px;
+        margin-bottom: 1em;
+      }
+
+      .content ul li,
+      .content ol li {
+        margin-bottom: 5px;
+      }
+
+      .content pre {
+        background-color: #ecf0f1;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.9em;
+        border: 1px solid #dcdcdc;
+      }
+
+      .content code {
+        background-color: #e0e0e0;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.9em;
+      }
+    </style>
+
     <script type="module" src="https://cdn.jsdelivr.net/npm/zero-md@3"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <aside class="sidebar">
-            <h1>CKA Study Guide</h1>
-            <nav>
-                <ul>
-                    <li><a href="#" onclick="loadContent('etcd.md')">etcd</a></li>
-                    <li><a href="#" onclick="loadContent('kube-apiserver.md')">kube-apiserver</a></li>
-                    <li><a href="#" onclick="loadContent('kube-scheduler.md')">kube-scheduler</a></li>
-                    <li><a href="#" onclick="loadContent('kube-controller-manager.md')">kube-controller-manager</a></li>
-                    <li><a href="#" onclick="loadContent('kubelet.md')">kubelet</a></li>
-                    <li><a href="#" onclick="loadContent('kube-proxy.md')">kube-proxy</a></li>
-                    <li><a href="#" onclick="loadContent('cheat-sheet.md')">CKA Cheat Sheet</a></li>
-                </ul>
-            </nav>
-        </aside>
-        <main class="content">
-            <zero-md id="markdown-display" src="cheat-sheet.md">
-                <template>
-                    <style>
-                        /* Optional: Customize markdown display within zero-md */
-                        h1 { color: #2c3e50; }
-                        h2 { border-bottom: 2px solid #eee; padding-bottom: 5px; }
-                        pre { background-color: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
-                        code { font-family: monospace; background-color: #e0e0e0; padding: 2px 4px; border-radius: 3px; }
-                        a { color: #3498db; text-decoration: none; }
-                        a:hover { text-decoration: underline; }
-                        ul, ol { margin-left: 20px; }
-                    </style>
-                </template>
-            </zero-md>
-        </main>
+      <aside class="sidebar">
+        <h1>CKA Study Guide</h1>
+        <nav>
+          <ul>
+            <li><a href="#" onclick="showContent('etcd')">etcd</a></li>
+            <li>
+              <a href="#" onclick="showContent('kube-apiserver')"
+                >kube-apiserver</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="showContent('kube-scheduler')"
+                >kube-scheduler</a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="showContent('kube-controller-manager')"
+                >kube-controller-manager</a
+              >
+            </li>
+            <li><a href="#" onclick="showContent('kubelet')">kubelet</a></li>
+            <li>
+              <a href="#" onclick="showContent('kube-proxy')">kube-proxy</a>
+            </li>
+            <li>
+              <a href="#" onclick="showContent('cheat-sheet')"
+                >CKA Cheat Sheet</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="content">
+        <zero-md id="markdown-display"> </zero-md>
+      </main>
     </div>
 
     <script>
-        function loadContent(filename) {
-            const markdownDisplay = document.getElementById('markdown-display');
-            markdownDisplay.setAttribute('src', filename);
-        }
+      function showContent(topic) {
+        const markdownDisplay = document.getElementById("markdown-display");
+        // Set the src to the corresponding .md file
+        markdownDisplay.src = `${topic}.md`;
+      }
 
-        // Load the cheat sheet by default when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            loadContent('cheat-sheet.md');
-        });
+      // Show the cheat sheet by default when the page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        showContent("cheat-sheet");
+      });
     </script>
-    </body>
+  </body>
 </html>
