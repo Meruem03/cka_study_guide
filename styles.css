@@ -1,0 +1,235 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7f6;
+  display: flex;
+  min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h1 {
+  font-size: 1.5em;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.sidebar nav {
+  flex-grow: 1;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 10px;
+}
+
+.sidebar nav ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+  background-color: #34495e;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px 40px;
+  background-color: white;
+  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.ai-features {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ai-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.ai-button:hover {
+  background-color: #2980b9;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(-50px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.visible .modal-content {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+.modal-title {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- CSS for rendered HTML --- */
+#content-display,
+#modal-body {
+  padding-bottom: 50px;
+}
+
+#content-display h1,
+#modal-body h1 {
+  color: #2c3e50;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+#content-display h2,
+#modal-body h2 {
+  color: #34495e;
+  margin-top: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+#content-display p,
+#modal-body p {
+  line-height: 1.6;
+  margin-bottom: 1em;
+}
+
+#content-display ul,
+#content-display ol,
+#modal-body ul,
+#modal-body ol {
+  margin-left: 25px;
+  margin-bottom: 1em;
+}
+
+#content-display ul li,
+#content-display ol li,
+#modal-body ul li,
+#modal-body ol li {
+  margin-bottom: 5px;
+}
+
+#content-display pre,
+#modal-body pre {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+  border: 1px solid #dcdcdc;
+}
+
+#content-display code,
+#modal-body code {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+}
+
+#content-display pre > code,
+#modal-body pre > code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+}

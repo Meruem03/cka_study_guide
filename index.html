@@ -3,171 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CKA Study Guide</title>
+    <title>CKA Study Guide with Gemini AI</title>
 
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f7f6;
-        display: flex;
-        min-height: 100vh;
-      }
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
 
-      .container {
-        display: flex;
-        width: 100%;
-      }
+    <!-- Marked.js for Markdown to HTML conversion -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-      .sidebar {
-        width: 250px;
-        background-color: #2c3e50;
-        color: white;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        flex-shrink: 0;
-      }
-
-      .sidebar h1 {
-        font-size: 1.5em;
-        margin-bottom: 30px;
-        text-align: center;
-      }
-
-      .sidebar nav ul {
-        list-style: none;
-        padding: 0;
-      }
-
-      .sidebar nav ul li {
-        margin-bottom: 10px;
-      }
-
-      .sidebar nav ul li a {
-        color: white;
-        text-decoration: none;
-        display: block;
-        padding: 10px 15px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
-
-      .sidebar nav ul li a:hover {
-        background-color: #34495e;
-      }
-
-      .content {
-        flex-grow: 1;
-        padding: 20px 40px;
-        max-width: 900px; /* Limit content width for better readability */
-        margin: 0 auto; /* Center the content */
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        border-radius: 8px;
-        overflow-y: auto; /* Enable scrolling for long content */
-      }
-
-      /* Basic styling for markdown content inside zero-md */
-      .content h1 {
-        color: #2c3e50;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 10px;
-        margin-top: 0;
-      }
-
-      .content h2 {
-        color: #34495e;
-        margin-top: 30px;
-      }
-
-      .content p {
-        line-height: 1.6;
-        margin-bottom: 1em;
-      }
-
-      .content ul,
-      .content ol {
-        margin-left: 25px;
-        margin-bottom: 1em;
-      }
-
-      .content ul li,
-      .content ol li {
-        margin-bottom: 5px;
-      }
-
-      .content pre {
-        background-color: #ecf0f1;
-        padding: 15px;
-        border-radius: 5px;
-        overflow-x: auto;
-        font-family: "Courier New", Courier, monospace;
-        font-size: 0.9em;
-        border: 1px solid #dcdcdc;
-      }
-
-      .content code {
-        background-color: #e0e0e0;
-        padding: 2px 4px;
-        border-radius: 3px;
-        font-family: "Courier New", Courier, monospace;
-        font-size: 0.9em;
-      }
-    </style>
-
-    <script type="module" src="https://cdn.jsdelivr.net/npm/zero-md@3"></script>
+    <!-- Link to the external JavaScript file (defer ensures it runs after HTML is parsed) -->
+    <script src="script.js" defer></script>
   </head>
   <body>
     <div class="container">
       <aside class="sidebar">
         <h1>CKA Study Guide</h1>
         <nav>
-          <ul>
-            <li><a href="#" onclick="showContent('etcd')">etcd</a></li>
+          <ul id="nav-links">
+            <li><a href="#" data-topic="cheat-sheet">CKA Cheat Sheet</a></li>
+            <li><a href="#" data-topic="etcd">etcd</a></li>
+            <li><a href="#" data-topic="kube-apiserver">kube-apiserver</a></li>
+            <li><a href="#" data-topic="kube-scheduler">kube-scheduler</a></li>
             <li>
-              <a href="#" onclick="showContent('kube-apiserver')"
-                >kube-apiserver</a
-              >
-            </li>
-            <li>
-              <a href="#" onclick="showContent('kube-scheduler')"
-                >kube-scheduler</a
-              >
-            </li>
-            <li>
-              <a href="#" onclick="showContent('kube-controller-manager')"
+              <a href="#" data-topic="kube-controller-manager"
                 >kube-controller-manager</a
               >
             </li>
-            <li><a href="#" onclick="showContent('kubelet')">kubelet</a></li>
-            <li>
-              <a href="#" onclick="showContent('kube-proxy')">kube-proxy</a>
-            </li>
-            <li>
-              <a href="#" onclick="showContent('cheat-sheet')"
-                >CKA Cheat Sheet</a
-              >
-            </li>
+            <li><a href="#" data-topic="kubelet">kubelet</a></li>
+            <li><a href="#" data-topic="kube-proxy">kube-proxy</a></li>
           </ul>
         </nav>
       </aside>
       <main class="content">
-        <zero-md id="markdown-display"> </zero-md>
+        <div class="ai-features">
+          <button id="summarize-btn" class="ai-button">
+            ✨ Summarize Topic
+          </button>
+          <button id="quiz-btn" class="ai-button">✨ Generate Quiz</button>
+        </div>
+        <!-- The content will be rendered here by script.js -->
+        <div id="content-display"></div>
       </main>
     </div>
 
-    <script>
-      function showContent(topic) {
-        const markdownDisplay = document.getElementById("markdown-display");
-        // Set the src to the corresponding .md file
-        markdownDisplay.src = `${topic}.md`;
-      }
-
-      // Show the cheat sheet by default when the page loads
-      document.addEventListener("DOMContentLoaded", () => {
-        showContent("cheat-sheet");
-      });
-    </script>
+    <!-- Modal for AI Features -->
+    <div id="ai-modal" class="modal-overlay">
+      <div class="modal-content">
+        <button id="modal-close-btn" class="modal-close">&times;</button>
+        <h2 id="modal-title" class="modal-title">AI Assistant</h2>
+        <div id="modal-body">
+          <div class="loader"></div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
