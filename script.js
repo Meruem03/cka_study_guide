@@ -67,21 +67,79 @@ It handles Service abstraction, ensuring that traffic destined for a Service IP 
 
 This is a concise guide to common \`kubectl\` commands and essential Kubernetes concepts for the Certified Kubernetes Administrator (CKA) exam.
 
-## General \`kubectl\` Commands
+## 🚦Core Resource Management
+\`\`\`bash
+kubectl get pods                            # List pods in current namespace
+kubectl get pods -A                         # List all pods in all namespaces
+kubectl get deployments                     # List deployments
+kubectl get svc                             # List services
+kubectl get all                             # Get all resources in namespace
+kubectl get events --sort-by=.metadata.creationTimestamp  # Recent events
+\`\`\`
 
-* **List resources:**
-    * \`kubectl get pods\`
-    * \`kubectl get deployments\`
-    * \`kubectl get services\`
-* **Describe resources:**
-    * \`kubectl describe pod <pod-name>\`
-* **Create/Apply/Delete:**
-    * \`kubectl apply -f <file.yaml>\`
-    * \`kubectl delete pod <pod-name>\`
-* **Execute commands in a Pod:**
-    * \`kubectl exec -it <pod-name> -- bash\`
-* **Logs:**
-    * \`kubectl logs -f <pod-name>\`
+## 🔍 Inspect & Debug
+\`\`\`bash
+kubectl describe pod <pod-name>             # Detailed info about a pod
+kubectl describe deployment <name>          # Deployment details
+kubectl get pod <pod-name> -o yaml          # Get full YAML of pod
+\`\`\`
+
+## 📜 Logs & Exec
+\`\`\`bash
+kubectl logs <pod>                          # Get logs from pod
+kubectl logs <pod> -c <container>           # From specific container
+kubectl logs -f <pod>                       # Follow logs
+kubectl exec -it <pod> -- /bin/bash         # Bash shell into container (if available)
+kubectl exec -it <pod> -c <container> -- /bin/sh  # sh shell if bash missing
+\`\`\`
+
+## ⚙️ Apply, Update, Rollout
+\`\`\`bash
+kubectl apply -f <file>.yaml                # Create or update resource
+kubectl delete -f <file>.yaml               # Delete resources
+kubectl rollout restart deployment <name>   # Force restart
+kubectl rollout status deployment <name>    # Check rollout progress
+kubectl edit deployment <name>              # Edit live deployment in editor
+\`\`\`
+
+## 📦 Helm Release Management (Bonus)
+If you're using Helm:
+\`\`\`bash
+helm list -A                                # List all Helm releases
+helm uninstall <release> -n <namespace>     # Uninstall a Helm release
+helm get values <release> -n <namespace>    # Get values used for a release
+helm upgrade <release> <chart> -f values.yaml  # Upgrade release with new values
+\`\`\`
+
+## 🗂 Namespaces & Scoping
+\`\`\`bash
+kubectl get ns                              # List namespaces
+kubectl get pods -n <namespace>             # List pods in namespace
+kubectl delete ns <namespace>               # Delete a namespace (careful!)
+\`\`\`
+
+## 🔌 Port Forwarding & Access
+\`\`\`bash
+kubectl port-forward pod/<pod-name> 8080:80   # Local 8080 → Pod 80
+kubectl port-forward svc/<service> 9090:9090  # Forward to service
+\`\`\`
+
+## 💣 Delete & Clean Up
+\`\`\`bash
+kubectl delete pod <name>                   # Delete pod
+kubectl delete deployment <name>           # Delete deployment
+kubectl delete svc <name>                  # Delete service
+kubectl delete ingress <name>              # Delete ingress
+kubectl delete job <job-name>              # Delete job
+kubectl delete pvc <name>                  # Delete persistent volume claim
+\`\`\`
+
+## 💡 Other Useful
+\`\`\`bash
+kubectl top pod                             # Resource usage per pod
+kubectl top node                            # Resource usage per node
+kubectl cp <pod>:/path/in/pod /local/path   # Copy from pod to local
+\`\`\`
 `
     };
 
