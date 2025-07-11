@@ -1,60 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CKA Study Guide with Gemini AI</title>
 
-    <!-- Link to the external stylesheet -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css">
 
-    <!-- Marked.js for Markdown to HTML conversion -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- Link to the external JavaScript file (defer ensures it runs after HTML is parsed) -->
     <script src="script.js" defer></script>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <aside class="sidebar">
-        <h1>CKA Study Guide</h1>
-        <nav>
-          <ul id="nav-links">
-            <li><a href="#" data-topic="cheat-sheet">CKA Cheat Sheet</a></li>
-            <li><a href="#" data-topic="etcd">etcd</a></li>
-            <li><a href="#" data-topic="kube-apiserver">kube-apiserver</a></li>
-            <li><a href="#" data-topic="kube-scheduler">kube-scheduler</a></li>
-            <li>
-              <a href="#" data-topic="kube-controller-manager"
-                >kube-controller-manager</a
-              >
-            </li>
-            <li><a href="#" data-topic="kubelet">kubelet</a></li>
-            <li><a href="#" data-topic="kube-proxy">kube-proxy</a></li>
-          </ul>
-        </nav>
-      </aside>
-      <main class="content">
-        <div class="ai-features">
-          <button id="summarize-btn" class="ai-button">
-            ✨ Summarize Topic
-          </button>
-          <button id="quiz-btn" class="ai-button">✨ Generate Quiz</button>
-        </div>
-        <!-- The content will be rendered here by script.js -->
-        <div id="content-display"></div>
-      </main>
+        <aside class="sidebar">
+            <h1>CKA Study Guide</h1>
+            <nav>
+                <ul id="nav-links">
+                    <li><a href="#" data-topic="cheat-sheet">CKA Cheat Sheet</a></li>
+                    <li><a href="#" data-topic="etcd">etcd</a></li>
+                    <li><a href="#" data-topic="kube-apiserver">kube-apiserver</a></li>
+                    <li><a href="#" data-topic="kube-scheduler">kube-scheduler</a></li>
+                    <li><a href="#" data-topic="kube-controller-manager">kube-controller-manager</a></li>
+                    <li><a href="#" data-topic="kubelet">kubelet</a></li>
+                    <li><a href="#" data-topic="kube-proxy">kube-proxy</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="content">
+            <div class="ai-features">
+                <button id="summarize-btn" class="ai-button">✨ Summarize Topic</button>
+                <button id="quiz-btn" class="ai-button">✨ Generate Quiz</button>
+            </div>
+            <div id="content-display"></div>
+        </main>
     </div>
 
-    <!-- Modal for AI Features -->
     <div id="ai-modal" class="modal-overlay">
-      <div class="modal-content">
-        <button id="modal-close-btn" class="modal-close">&times;</button>
-        <h2 id="modal-title" class="modal-title">AI Assistant</h2>
-        <div id="modal-body">
-          <div class="loader"></div>
+        <div class="modal-content">
+            <button id="modal-close-btn" class="modal-close">&times;</button>
+            <h2 id="modal-title" class="modal-title">AI Assistant</h2>
+            <div id="modal-body">
+                <div class="loader"></div>
+            </div>
         </div>
-      </div>
     </div>
-  </body>
+</body>
 </html>
