@@ -1,7 +1,5 @@
-// Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Store all markdown content in a JavaScript object
     const markdownContent = {
         'etcd': `
 # etcd: The Kubernetes Brain
@@ -19,7 +17,7 @@ If \`etcd\` goes down, your Kubernetes cluster effectively becomes read-only and
 The \`kube-apiserver\` is the **front-end** of the Kubernetes control plane. It exposes the Kubernetes API. All communication between cluster components (e.g., \`kubelet\`, \`kube-scheduler\`, \`kube-controller-manager\`) and external users (via \`kubectl\`) goes through the API Server.
 
 ## Why it's Important
-It's the central hub for all interactions. It validates and configures data for API objects (pods, services, deployments, etc.) and provides a consistent interface to the shared state of the cluster (stored in \`etcd\`).
+It's the central hub for all interactions.
 `,
         'kube-scheduler': `
 # kube-scheduler: The Pod Placer
@@ -84,6 +82,23 @@ kubectl describe deployment <name>          # Deployment details
 kubectl get pod <pod-name> -o yaml          # Get full YAML of pod
 \`\`\`
 
+## 📜 API & Resource Schema Inspection
+The \`explain\` command is your built-in API documentation. It's essential for finding field names and understanding the structure of objects when writing YAML.
+
+\`\`\`bash
+# Get documentation for the Pod resource
+kubectl explain pod
+
+# Drill down into the 'spec' field of a Pod
+kubectl explain pod.spec
+
+# See all the fields for a container
+kubectl explain pod.spec.containers
+
+# Find out what the 'imagePullPolicy' field does
+kubectl explain pod.spec.containers.imagePullPolicy
+\`\`\`
+
 ## 📜 Logs & Exec
 \`\`\`bash
 kubectl logs <pod>                          # Get logs from pod
@@ -102,28 +117,6 @@ kubectl rollout status deployment <name>    # Check rollout progress
 kubectl edit deployment <name>              # Edit live deployment in editor
 \`\`\`
 
-## 📦 Helm Release Management (Bonus)
-If you're using Helm:
-\`\`\`bash
-helm list -A                                # List all Helm releases
-helm uninstall <release> -n <namespace>     # Uninstall a Helm release
-helm get values <release> -n <namespace>    # Get values used for a release
-helm upgrade <release> <chart> -f values.yaml  # Upgrade release with new values
-\`\`\`
-
-## 🗂 Namespaces & Scoping
-\`\`\`bash
-kubectl get ns                              # List namespaces
-kubectl get pods -n <namespace>             # List pods in namespace
-kubectl delete ns <namespace>               # Delete a namespace (careful!)
-\`\`\`
-
-## 🔌 Port Forwarding & Access
-\`\`\`bash
-kubectl port-forward pod/<pod-name> 8080:80   # Local 8080 → Pod 80
-kubectl port-forward svc/<service> 9090:9090  # Forward to service
-\`\`\`
-
 ## 💣 Delete & Clean Up
 \`\`\`bash
 kubectl delete pod <name>                   # Delete pod
@@ -134,7 +127,79 @@ kubectl delete job <job-name>              # Delete job
 kubectl delete pvc <name>                  # Delete persistent volume claim
 \`\`\`
 
-## 💡 Other Useful
+---
+
+## Creating Resources from the Command Line
+
+### Pods and Deployments
+This is a common workflow for quickly creating resources and generating YAML manifests.
+
+\`\`\`bash
+# Create a simple Nginx pod
+kubectl run nginx --image=nginx
+
+# Generate POD Manifest YAML file (-o yaml). 
+# Don't create it(--dry-run=client)
+kubectl run nginx --image=nginx --dry-run=client -o yaml
+
+# Create a deployment named 'nginx'
+kubectl create deployment --image=nginx nginx
+
+# Generate Deployment YAML file. Don't create it.
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml
+
+# Generate Deployment YAML and save it to a file.
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml
+
+# You can now edit the YAML file, for example, to change the number of replicas.
+# Then, create the resource from the modified file.
+kubectl create -f nginx-deployment.yaml
+
+# Alternatively, create a deployment with 4 replicas directly
+kubectl create deployment --image=nginx nginx --replicas=4 --dry-run=client -o yaml > nginx-deployment.yaml
+\`\`\`
+
+---
+
+## Kubectl Usage Conventions & Best Practices
+
+### Using kubectl in Reusable Scripts
+For stable and predictable output in scripts:
+- **Use machine-readable output:** Request formats like \`-o name\`, \`-o json\`, \`-o yaml\`, \`-o go-template\`, or \`-o jsonpath\`.
+- **Specify API versions:** Fully-qualify resource versions, like \`jobs.v1.batch/myjob\`. This prevents issues if the default version changes in later releases.
+- **Avoid implicit state:** Don't rely on the current context, preferences, or other states that can change outside the script.
+
+### Subresources
+You can manage subresources like \`status\` and \`scale\` directly.
+\`\`\`bash
+# Get the scale subresource for a deployment
+kubectl get deployment nginx --subresource=scale
+
+# Note: 'kubectl edit' does not support the 'scale' subresource.
+\`\`\`
+
+### Best Practices for \`kubectl run\` and \`kubectl apply\`
+- **\`kubectl run\`:**
+    - Use specific image tags (e.g., \`my-image:v1.2.3\`) instead of \`:latest\` to ensure your deployments are predictable.
+    - For complex configurations, switch to YAML files stored in source control.
+    - Always use the \`--dry-run=client\` flag to preview the object before submitting it to the cluster. This is crucial for preventing mistakes.
+- **\`kubectl apply\`:**
+    - This is the preferred method for managing resources declaratively. It allows you to create resources if they don't exist or update them if they do, based on a YAML file.
+    \`\`\`bash
+    # Apply changes from a file. If the resource exists, it's updated. If not, it's created.
+    kubectl apply -f nginx-deployment.yaml
+    \`\`\`
+
+## 📦 Helm Release Management (Bonus)
+If you're using Helm:
+\`\`\`bash
+helm list -A                                # List all Helm releases
+helm uninstall <release> -n <namespace>     # Uninstall a Helm release
+helm get values <release> -n <namespace>    # Get values used for a release
+helm upgrade <release> <chart> -f values.yaml  # Upgrade release with new values
+\`\`\`
+
+## 💡 Other Useful Commands
 \`\`\`bash
 kubectl top pod                             # Resource usage per pod
 kubectl top node                            # Resource usage per node
@@ -143,118 +208,41 @@ kubectl cp <pod>:/path/in/pod /local/path   # Copy from pod to local
 `
     };
 
-    // Get references to all the necessary HTML elements
+
     const contentDisplay = document.getElementById('content-display');
     const navLinksContainer = document.getElementById('nav-links');
-    const summarizeBtn = document.getElementById('summarize-btn');
-    const quizBtn = document.getElementById('quiz-btn');
-    const modal = document.getElementById('ai-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalBody = document.getElementById('modal-body');
-    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
 
     let currentTopic = 'cheat-sheet';
 
-    // Function to display content for a given topic
     function showContent(topic) {
         currentTopic = topic;
         const content = markdownContent[topic];
-
-        // Use marked.parse() to convert markdown to HTML
         contentDisplay.innerHTML = marked.parse(content);
         
-        // Update the 'active' class on the navigation links
         const links = navLinksContainer.querySelectorAll('a');
         links.forEach(link => {
             link.classList.toggle('active', link.dataset.topic === topic);
         });
+
+        // Close sidebar on mobile after selection
+        if (window.innerWidth < 768) {
+            sidebar.classList.remove('open');
+        }
     }
 
-    // Add a single event listener to the navigation container
     navLinksContainer.addEventListener('click', (event) => {
         event.preventDefault();
-        const target = event.target;
-        // Check if a link was clicked
-        if (target.tagName === 'A' && target.dataset.topic) {
+        const target = event.target.closest('a');
+        if (target && target.dataset.topic) {
             showContent(target.dataset.topic);
         }
     });
 
-    // --- Gemini API Integration ---
-
-    function showModal(title) {
-        modalTitle.textContent = title;
-        modalBody.innerHTML = '<div class="loader"></div>';
-        modal.classList.add('visible');
-    }
-
-    function hideModal() {
-        modal.classList.remove('visible');
-    }
-
-    async function callGemini(prompt) {
-        const apiKey = ""; // API key will be provided by the environment
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-        
-        const payload = {
-            contents: [{
-                role: "user",
-                parts: [{ text: prompt }]
-            }]
-        };
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            
-            if (result.candidates && result.candidates.length > 0 &&
-                result.candidates[0].content && result.candidates[0].content.parts &&
-                result.candidates[0].content.parts.length > 0) {
-                const text = result.candidates[0].content.parts[0].text;
-                // Also use marked.parse for the modal content
-                modalBody.innerHTML = marked.parse(text);
-            } else {
-                throw new Error("Invalid response structure from API.");
-            }
-
-        } catch (error) {
-            console.error("Gemini API call failed:", error);
-            modalBody.innerHTML = `<p>Sorry, something went wrong. Please try again later. Error: ${error.message}</p>`;
-        }
-    }
-
-    summarizeBtn.addEventListener('click', () => {
-        showModal('✨ AI Summary');
-        const content = markdownContent[currentTopic];
-        const prompt = `Please summarize the following CKA study guide topic in a few key bullet points. Focus on the most critical information for someone preparing for the exam. The topic is "${currentTopic}". Here is the content:\n\n---\n\n${content}`;
-        callGemini(prompt);
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
     });
 
-    quizBtn.addEventListener('click', () => {
-        showModal('✨ AI Quiz');
-        const content = markdownContent[currentTopic];
-        const prompt = `Based on the following CKA study material about "${currentTopic}", generate 3 multiple-choice quiz questions with 4 options each (A, B, C, D). The questions should be in a markdown format. Bold the correct answer for each question. Here is the content:\n\n---\n\n${content}`;
-        callGemini(prompt);
-    });
-
-    // Event listeners for closing the modal
-    modalCloseBtn.addEventListener('click', hideModal);
-    modal.addEventListener('click', (event) => {
-        // Close modal if the overlay is clicked, but not the content inside it
-        if (event.target === modal) {
-            hideModal();
-        }
-    });
-
-    // Show the cheat sheet by default when the page loads
     showContent('cheat-sheet');
 });
